@@ -1,30 +1,38 @@
-import { Alert, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { useState } from "react";
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import logo from "../assets/images/check.png";
 import Task from "../components/Task";
 import { colors } from "../constants/colors";
 
-export default function RootLayout() {
-
-  const tasks = [
+const initialTasks = [
     { id: 1, completed: true, text: "Fazer café" },
     { id: 2, completed: false, text: "Estudar React" },
     { id: 3, completed: true, text: "Academia" },
   ]
 
+export default function RootLayout() {
+  const [tasks, setTasks] = useState(initialTasks)
+  const [text, setText] = useState("")
+  
+  const addTask = () => {
+    const newTask = {id: tasks.length+1, completed: false, text}
+    setTasks([...tasks, newTask])
+    setText("")
+  }
+
   return (
     <SafeAreaView style={style.mainContainer}>
-      <ScrollView>
 
         <View style={style.rowContainer}>
           <Image source={logo} style={style.image} />
-          <Text style={style.title}>meu cu</Text>
+          <Text style={style.title}>Minhas tarefas</Text>
         </View>
 
         <View style={style.rowContainer}>
-          <TextInput style={style.input} />
+          <TextInput style={style.input} value={text} onChangeText={setText}/>
           <Pressable
-            onPress={() => Alert.alert("Oi")}
+            onPress={addTask}
             style={({ pressed }) => [
               style.button,
               { backgroundColor: pressed ? "blue" : colors.primary }
@@ -35,12 +43,11 @@ export default function RootLayout() {
         </View>
             <FlatList
             data={tasks}
-            renderItem={({item}) => <Task text={item.text}/>}
+            renderItem={({item}) => <Task text={item.text} initialCompleted={item.completed}/>}
             />
         <View>
 
         </View>
-      </ScrollView>
     </SafeAreaView>
   )
 }

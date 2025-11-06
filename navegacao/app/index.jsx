@@ -7,7 +7,13 @@ export default function Home() {
     <View style={[styles.container, { backgroundColor: "#FAEDCB" }]}>
       <Text>Home</Text>
       <Link push href={"/user"}>
-        Usuarios
+        Usuarios ➡️
+      </Link>
+      <Link push href={"/products"}>
+        Produtos ➡️
+      </Link>
+      <Link push href={"/proasdasdasdasdducts"}>
+        Erro ➡️
       </Link>
     </View>
   )

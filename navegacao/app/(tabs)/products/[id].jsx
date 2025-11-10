@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router"
 import { Text, View } from "react-native"
-import { styles } from "../../styles/styles"
+import { styles } from "../../../styles/styles"
 
 export default function ProductDetail() {
   const {id} = useLocalSearchParams()

@@ -1,3 +1,4 @@
+import { DrawerToggleButton } from "@react-navigation/drawer";
 import { Stack } from "expo-router";
 
 export default function ProductsLayout() {
@@ -5,7 +6,8 @@ export default function ProductsLayout() {
         <Stack
         screenOptions={{
                 headerStyle: { backgroundColor: "#E95560" },
-                headerShown: false
+                headerShown: false,
+                headerLeft: () => <DrawerToggleButton tintColor="#FFFFFF"/>
             }}
         >
             <Stack.Screen name="index"/>

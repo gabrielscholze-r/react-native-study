@@ -1,4 +1,5 @@
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,15 +7,36 @@ import logo from "../assets/images/check.png";
 import Task from "../components/Task";
 import { colors } from "../constants/colors";
 
-const initialTasks = [
-  { id: 1, completed: true, text: "Fazer café" },
-  { id: 2, completed: false, text: "Estudar React" },
-  { id: 3, completed: true, text: "Academia" },
-]
+
 
 export default function RootLayout() {
-  const [tasks, setTasks] = useState(initialTasks)
+  const [tasks, setTasks] = useState([])
   const [text, setText] = useState("")
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('tasks');
+        setTasks(jsonValue != null ? JSON.parse(jsonValue) : null);
+      } catch (e) {
+        console.log(e)
+      }
+    };
+    getData()
+  }, [])
+
+
+  useEffect(() => {
+    const setTasksAsyncStorage = async () => {
+      try {
+        const jsonValue = JSON.stringify(tasks)
+        await AsyncStorage.setItem('tasks', jsonValue)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    setTasksAsyncStorage()
+  }, [tasks])
 
   const addTask = () => {
     const newTask = { id: tasks.length + 1, completed: false, text }
@@ -32,7 +54,7 @@ export default function RootLayout() {
         </View>
 
         <View style={style.rowContainer}>
-          <TextInput style={style.input} value={text} onChangeText={setText}/>
+          <TextInput style={style.input} value={text} onChangeText={setText} />
           <Pressable
             onPress={addTask}
             style={({ pressed }) => [

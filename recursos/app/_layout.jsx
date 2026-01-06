@@ -32,7 +32,7 @@ export default function RootLayout() {
         </View>
 
         <View style={style.rowContainer}>
-          <TextInput style={style.input} value={text} onChangeText={setText} />
+          <TextInput style={style.input} value={text} onChangeText={setText}/>
           <Pressable
             onPress={addTask}
             style={({ pressed }) => [
